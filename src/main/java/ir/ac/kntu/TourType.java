@@ -1,12 +1,10 @@
 package ir.ac.kntu;
 
-import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import static java.awt.SystemColor.menu;
+
 
 public class TourType {
     private static LinkedList<TourType> tourTypes = new LinkedList<>();
@@ -16,9 +14,9 @@ public class TourType {
     private int maxPeople;
     private int price;
     private String destination;
-    private  String startingPoint;
-    private  WaysOfTravel theVehicle;
-    private LinkedList<String> places = new LinkedList<String>();
+    private String startingPoint;
+    private WaysOfTravel theVehicle;
+    private LinkedList<String> places = new LinkedList<>();
     private LinkedList<Tour> Tours = new LinkedList<>();
 
     public static void editATourType(int i) {
@@ -181,16 +179,8 @@ public class TourType {
         return Tours;
     }
 
-    public void setTours(LinkedList<Tour> tours) {
-        Tours = tours;
-    }
-
     public static LinkedList<TourType> getTourTypes() {
         return tourTypes;
-    }
-
-    public static void setTourTypes(LinkedList<TourType> tourTypes) {
-        TourType.tourTypes = tourTypes;
     }
 
     public static void printAllTourTypes() {
@@ -201,6 +191,11 @@ public class TourType {
 
     public static void addATourType(){
         Scanner in = new Scanner(System.in);
+        if(Location.locations == null){
+            System.out.println("there are no locations added to the program " +
+                    "in order to add a tour type you have to add a location\n");
+                Location.addALocation();
+        }
         System.out.println("choose the region of the tour:");
         TourType newTourType = new TourType();
         Location.printAllLocations();

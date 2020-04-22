@@ -1,5 +1,7 @@
 package ir.ac.kntu;
 
+import java.util.Scanner;
+
 public class Date {
     private int year;
     private int month;
@@ -15,7 +17,6 @@ public class Date {
         this.day = date.day;
     }
 
-    public Date(){}
 
 
 
@@ -41,33 +42,21 @@ public class Date {
         return month != 12 || day != 30 || isLeapYear(year);
     }
 
-    public void setDate(int year, int month, int day) {
-        checkAndSetDate(year, month, day);
-    }
 
     public int getYear() {
         return year;
     }
 
-    public void setYear(int year) {
-        checkAndSetDate(year, this.month, this.day);
-    }
 
     public int getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
-        checkAndSetDate(this.year, month, this.day);
-    }
 
     public int getDay() {
         return day;
     }
 
-    public void setDay(int day) {
-        checkAndSetDate(this.year, this.month, day);
-    }
 
 
     public String toString() {
@@ -146,6 +135,17 @@ public class Date {
         return firstFraction <= b && secondFraction > b;
     }
 
+
+    public static Date dateMaker() {
+        Scanner in = new Scanner(System.in) ;
+        System.out.println("enter the year:");
+        int year = in.nextInt();
+        System.out.println("enter the month:");
+        int month = in.nextInt();
+        System.out.println("enter the day:");
+        int day = in.nextInt();
+        return new Date(year,month,day);
+    }
 
 
 }

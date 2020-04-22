@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import static java.awt.SystemColor.menu;
 
 public class Tour {
     private Date dayOfDeparture;
@@ -12,25 +11,60 @@ public class Tour {
     private TourType type;
     private TourLeader theLeader;
 
+    public Date getDayOfDeparture() {
+        return dayOfDeparture;
+    }
+
+    public void setDayOfDeparture(Date dayOfDeparture) {
+        this.dayOfDeparture = dayOfDeparture;
+    }
+
+    public Date getDayOfArrival() {
+        return dayOfArrival;
+    }
+
+    public void setDayOfArrival(Date dayOfArrival) {
+        this.dayOfArrival = dayOfArrival;
+    }
+
+
+
+    public void setType(TourType type) {
+        this.type = type;
+    }
+
+    public TourLeader getTheLeader() {
+        return theLeader;
+    }
+
+    public void setTheLeader(TourLeader theLeader) {
+        this.theLeader = theLeader;
+    }
+
+
     public static void addATour() {
         Scanner in = new Scanner(System.in);
+        if(TourType.getTourTypes() == null){
+            System.out.println("there are no tour type in this program" +
+                    "in order to add a tour you have to add a tour type");
+            TourType.addATourType();
+        }
         System.out.println("choose a tour type:");
         TourType.printAllTourTypes();
         int choice = in.nextInt();
         Tour newTour = new Tour();
         newTour.setType(TourType.getTourTypes().get(choice));
         System.out.println("enter the date of departure:");
-        System.out.println("enter the year:");
-        int year = in.nextInt();
-        System.out.println("enter the month:");
-        int month = in.nextInt();
-        System.out.println("enter the day:");
-        int day = in.nextInt();
-        Date dateOfDeparture = new Date(year,month,day);
-        newTour.setDayOfDeparture(dateOfDeparture);
+        Date dateOfDeparture = Date.dateMaker();
+        newTour.dayOfDeparture = dateOfDeparture;
         newTour.dayOfArrival = dateOfDeparture;
         for(int i = 0; i<TourType.getTourTypes().get(choice).getTimeLength(); i++){
-            newTour.dayOfArrival.nextDay();
+            newTour.setDayOfArrival(newTour.dayOfArrival.nextDay());
+        }
+        if(TourLeader.getTourLeaders() == null){
+            System.out.println("there are no tour leader in this program" +
+                    "in order to add a tour you have to add a tour leader");
+            TourLeader.addTourLeader();
         }
         System.out.println("choose a tour leader:");
         TourLeader.printAllTourLeader();
@@ -46,6 +80,7 @@ public class Tour {
         TourType.getTourTypes().get(choice).getTours().addLast(newTour);
 
     }
+
 
     public static void editATour(int tourTypeIndex,int tourIndex) {
         Scanner in = new Scanner(System.in);
@@ -68,13 +103,7 @@ public class Tour {
             case 2 :
                 System.out.println("the previous departure date: " + TourType.getTourTypes().get(tourTypeIndex).getTours().get(tourIndex).getDayOfDeparture());
                 System.out.println("enter the new date of departure:");
-                System.out.println("enter the year:");
-                int year = in.nextInt();
-                System.out.println("enter the month:");
-                int month = in.nextInt();
-                System.out.println("enter the day:");
-                int day = in.nextInt();
-                Date newDateOfDeparture = new Date(year,month,day);
+                Date newDateOfDeparture = Date.dateMaker();
                 TourType.getTourTypes().get(tourTypeIndex).getTours().get(tourIndex).setDayOfDeparture(newDateOfDeparture);
                 TourType.getTourTypes().get(tourTypeIndex).getTours().get(tourIndex).setDayOfArrival(newDateOfDeparture);
                 for(int j = 0; j<TourType.getTourTypes().get(tourTypeIndex).getTimeLength(); j++){
@@ -321,8 +350,8 @@ public class Tour {
                         LinkedList<Integer> indexTour4 = new LinkedList<>();
                         for(int t=0 ; t<TourType.getTourTypes().size();t++){
                             for (int k=0 ; k<TourType.getTourTypes().get(t).getTours().size();k++){
-                                if(Date.compere(TourType.getTourTypes().get(t).getTours().get(k).getDayOfDeparture(),searchedDateOfArrival2)==1&&
-                                        Date.compere(TourType.getTourTypes().get(t).getTours().get(k).getDayOfDeparture(),searchedDateOfArrival3)==-1){
+                                if(Date.compere(TourType.getTourTypes().get(t).getTours().get(k).getDayOfArrival(),searchedDateOfArrival2)==1&&
+                                        Date.compere(TourType.getTourTypes().get(t).getTours().get(k).getDayOfArrival(),searchedDateOfArrival3)==-1){
                                     searchedDate2.add(TourType.getTourTypes().get(t).getTours().get(k).theLeader);
                                     indexTourType4.add(t);
                                     indexTour4.add(k);
@@ -537,37 +566,6 @@ public class Tour {
     }
 
 
-    public Date getDayOfDeparture() {
-        return dayOfDeparture;
-    }
-
-    public void setDayOfDeparture(Date dayOfDeparture) {
-        dayOfDeparture = dayOfDeparture;
-    }
-
-    public Date getDayOfArrival() {
-        return dayOfArrival;
-    }
-
-    public void setDayOfArrival(Date dayOfArrival) {
-        dayOfArrival = dayOfArrival;
-    }
-
-    public TourType getType() {
-        return type;
-    }
-
-    public void setType(TourType type) {
-        this.type = type;
-    }
-
-    public TourLeader getTheLeader() {
-        return theLeader;
-    }
-
-    public void setTheLeader(TourLeader theLeader) {
-        this.theLeader = theLeader;
-    }
 
     public static void  printAllTours(){
         for(int i = 0 ; i<TourType.getTourTypes().size();i++){

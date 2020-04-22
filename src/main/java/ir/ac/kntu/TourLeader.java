@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class TourLeader {
+public class TourLeader extends Person{
     private static LinkedList<TourLeader> tourLeaders = new LinkedList<>();
     private String firstName;
     private String surName;
@@ -18,6 +18,9 @@ public class TourLeader {
     private Tour currentTour;
     private int age;
 
+    public TourLeader(int accessLevel){
+        this.accessLevel = accessLevel;
+    }
 
     public static void printAllTourLeader() {
         for (int i = 0; i < tourLeaders.size(); i++) {
@@ -29,13 +32,12 @@ public class TourLeader {
     }
 
 
+
+
     public static LinkedList<TourLeader> getTourLeaders() {
         return tourLeaders;
     }
 
-    public static void setTourLeaders(LinkedList<TourLeader> tourLeaders) {
-        TourLeader.tourLeaders = tourLeaders;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -114,16 +116,13 @@ public class TourLeader {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
 
     public void ageCalculator(Date today){
         if(dateOfBirth.getMonth()>today.getMonth()){
-            age = today.getYear()-dateOfBirth.getYear()-1;
+            age = today.getYear() - dateOfBirth.getYear()-1;
         }
         else if(dateOfBirth.getMonth()<today.getMonth()){
-            age = today.getYear()-dateOfBirth.getYear();
+            age = today.getYear() - dateOfBirth.getYear();
         }
         else{
             if(today.getDay()>today.getDay()){
@@ -137,7 +136,8 @@ public class TourLeader {
 
     public static void  addTourLeader(){
         Scanner in = new Scanner(System.in);
-        TourLeader newTourLeader = new TourLeader();
+        TourLeader newTourLeader = new TourLeader(4);
+        Person.addAPerson(newTourLeader);
         System.out.println("enter his/her first name:");
         String newFirstName = in.next();
         newTourLeader.setFirstName(newFirstName);
@@ -169,6 +169,15 @@ public class TourLeader {
         System.out.println("enter true if you're married or false if otherwise:");
         boolean marriage = in.nextBoolean();
         newTourLeader.setMaritalStatus(marriage);
+        if(Location.locations == null){
+            System.out.println("there are no locations added to the program " +
+                    "in order to add familiar locations you have to add some locations\n" +
+                    "how many are you going to add?");
+            int i = in.nextInt();
+            for(int j=0;j<i;j++){
+                Location.addALocation();
+            }
+        }
         System.out.println("how many locations are you familiar with?");
         int i =in.nextInt();
         ArrayList<Location> newLocations = new ArrayList<>();
@@ -198,6 +207,9 @@ public class TourLeader {
 
     public static void editTourLeader(int i) {
         Scanner in = new Scanner(System.in);
+        Person changingPerson = tourLeaders.get(i);
+        changingPerson = editAPerson(changingPerson);
+        tourLeaders.set(i,(TourLeader) changingPerson);
         System.out.println("choose what you want to change: \n first name(1)\n surname(2)\n id(3)" +
                 "\n personal number(4)\n date of birth(5)\n date of employment(6)\n marital status(7)\n" +
                 " familiar location(8)\n if you want to change the current tour you should take action threw tour access ");
@@ -252,7 +264,7 @@ public class TourLeader {
             case 7:
                 System.out.println("the old marital status:  " + tourLeaders.get(i).isMaritalStatus() +
                         "\n enter the new marital status:");
-                Boolean marriage = in.nextBoolean();
+                boolean marriage = in.nextBoolean();
                 tourLeaders.get(i).setMaritalStatus(marriage);
                 break;
             case 8:
